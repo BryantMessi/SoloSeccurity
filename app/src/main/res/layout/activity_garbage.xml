@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_garbage"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.solo.security.garbage.GarbageActivity">
+
+    <fragment
+        android:id="@+id/fm_garbage"
+        android:name="com.solo.security.garbage.GarbageFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</RelativeLayout>
