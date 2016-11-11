@@ -11,24 +11,19 @@
         <activity android:name=".MainActivity">
         </activity>
         <activity android:name=".memory.MemoryActivity">
-        </activity>
-        <activity android:name=".garbage.GarbageActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+        </activity>
+        <activity android:name=".garbage.GarbageActivity">
         </activity>
         <activity android:name=".safe.SafeActivity">
         </activity>
         <activity android:name=".whitelist.WhiteListActivity">
         </activity>
         <activity android:name=".homepage.HomePageActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
         </activity>
     </application>
 

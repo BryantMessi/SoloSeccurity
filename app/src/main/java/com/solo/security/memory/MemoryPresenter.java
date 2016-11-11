@@ -2,8 +2,11 @@ package com.solo.security.memory;
 
 import android.support.annotation.NonNull;
 
+import com.solo.security.data.Security;
 import com.solo.security.data.memorysource.MemoryData;
 import com.solo.security.data.memorysource.MemoryDataImpl;
+
+import java.util.List;
 
 /**
  * Created by Messi on 16-11-3.
@@ -36,16 +39,6 @@ public class MemoryPresenter implements MemoryContract.DeepMemoryPresenter, Memo
     }
 
     @Override
-    public void getCurrentMemorySize() {
-        mData.getCurrentMemorySize(this);
-    }
-
-    @Override
-    public void getTotalRunningProcessSize() {
-        mData.getRunningProcessSize(this);
-    }
-
-    @Override
     public void killRunningProcess() {
         mData.killRunningProcess(this);
     }
@@ -56,29 +49,25 @@ public class MemoryPresenter implements MemoryContract.DeepMemoryPresenter, Memo
     }
 
     @Override
-    public void onRunningProcessInfo() {
-        mMemoryView.setRunningProcessInfo();
+    public void onRunningProcessInfo(List<Security> securities) {
+        mMemoryView.setRunningProcessInfo(securities);
     }
 
     @Override
-    public void onAvailableMemoryLoaded() {
-        mMemoryView.setAvailableMemorySize();
+    public void onAvailableMemoryLoaded(String size) {
+        mMemoryView.setAvailableMemorySize(size);
     }
 
     @Override
-    public void onTotalMemoryLoaded() {
-        mMemoryView.setTotalMemorySize();
+    public void onTotalMemoryLoaded(String size) {
+        mMemoryView.setTotalMemorySize(size);
     }
 
     @Override
-    public void onCurrentMemorySize() {
-        mMemoryView.setCurrentMemorySize();
+    public void onCurrentMemorySize(String size) {
+        mMemoryView.setCurrentMemorySize(size);
     }
 
-    @Override
-    public void onTotalRunningProcessSize(String size) {
-        mMemoryView.setTotalRunningProcessSize(size);
-    }
 
     @Override
     public void onRunningProcessKilled() {

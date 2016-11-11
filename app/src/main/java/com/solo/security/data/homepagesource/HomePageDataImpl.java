@@ -1,8 +1,11 @@
 package com.solo.security.data.homepagesource;
 
+import com.solo.security.data.Security;
 import com.solo.security.data.garbagesource.GarbageData.BaseGarbageCallback;
 import com.solo.security.data.memorysource.MemoryData;
 import com.solo.security.data.safesource.SafeData;
+
+import java.util.List;
 
 /**
  * Created by Messi on 16-11-5.
@@ -23,22 +26,22 @@ public class HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCall
     }
 
     @Override
-    public void onRunningProcessPercent() {
+    public void onRunningProcessPercent(int percent) {
 
     }
 
     @Override
-    public void onCurrentMemorySize() {
-
-    }
-
-    @Override
-    public void onTotalRunningProcessSize(String size) {
+    public void onCurrentMemorySize(String size) {
 
     }
 
     @Override
     public void onRunningProcessKilled() {
+
+    }
+
+    @Override
+    public void onRunningProcessInfo(List<Security> runningProcessInfoList) {
 
     }
 

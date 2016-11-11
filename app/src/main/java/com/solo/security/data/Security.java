@@ -6,7 +6,7 @@ import android.graphics.drawable.Drawable;
  * Created by Messi on 16-11-3.
  */
 
-public class Seccurity {
+public class Security {
     private Drawable mIcon;
     private String mLabel;
     private String mPackageName;
@@ -25,7 +25,7 @@ public class Seccurity {
         return mLabel;
     }
 
-    public void setmLabel(String label) {
+    public void setLabel(String label) {
         this.mLabel = label;
     }
 

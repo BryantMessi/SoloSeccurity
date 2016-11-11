@@ -2,36 +2,35 @@ package com.solo.security.data.memorysource;
 
 import android.support.annotation.NonNull;
 
+import com.solo.security.data.Security;
+
+import java.util.List;
+
 /**
  * Created by Messi on 16-11-3.
  */
 
 public interface MemoryData {
     interface BaseMemoryCallback {
-        void onCurrentMemorySize();
-
-        void onTotalRunningProcessSize(String size);
+        void onCurrentMemorySize(String size);
 
         void onRunningProcessKilled();
+
+        void onRunningProcessInfo(List<Security> runningProcessInfoList);
     }
 
     interface FastMemoryCallback extends BaseMemoryCallback {
-        void onRunningProcessPercent();
+        void onRunningProcessPercent(int percent);
     }
 
     interface DeepMemoryCallback extends BaseMemoryCallback {
-        void onRunningProcessInfo();
 
-        void onAvailableMemoryLoaded();
+        void onAvailableMemoryLoaded(String available);
 
-        void onTotalMemoryLoaded();
+        void onTotalMemoryLoaded(String total);
     }
 
-    void getCurrentMemorySize(@NonNull BaseMemoryCallback callback);
-
     void getRunningProcessInfo(@NonNull DeepMemoryCallback callback);
-
-    void getRunningProcessSize(@NonNull BaseMemoryCallback callback);
 
     void getRunningProcessPercent(@NonNull FastMemoryCallback callback);
 

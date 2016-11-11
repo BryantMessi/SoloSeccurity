@@ -11,6 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.solo.security.R;
+import com.solo.security.data.Security;
+
+import java.util.List;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 
@@ -52,8 +55,6 @@ public class MemoryFragment extends Fragment implements MemoryContract.DeepMemor
         view.findViewById(R.id.btn_1).setOnClickListener(this);
         view.findViewById(R.id.btn_2).setOnClickListener(this);
         view.findViewById(R.id.btn_3).setOnClickListener(this);
-        view.findViewById(R.id.btn_4).setOnClickListener(this);
-        view.findViewById(R.id.btn_5).setOnClickListener(this);
         view.findViewById(R.id.btn_6).setOnClickListener(this);
     }
 
@@ -64,29 +65,25 @@ public class MemoryFragment extends Fragment implements MemoryContract.DeepMemor
     }
 
     @Override
-    public void setRunningProcessInfo() {
-        Log.d("messi", "setRunningProcessInfo");
+    public void setRunningProcessInfo(List<Security> securities) {
+        Log.d("messi", "setRunningProcessInfo list :" + securities.size());
     }
 
     @Override
-    public void setAvailableMemorySize() {
-        Log.d("messi", "setAvailableMemorySize");
+    public void setAvailableMemorySize(String size) {
+        Log.d("messi", "setAvailableMemorySize size :" + size);
     }
 
     @Override
-    public void setTotalMemorySize() {
-        Log.d("messi", "setTotalMemorySize");
+    public void setTotalMemorySize(String size) {
+        Log.d("messi", "setTotalMemorySize size :" + size);
     }
 
     @Override
-    public void setCurrentMemorySize() {
-        Log.d("messi", "setCurrentMemorySize");
+    public void setCurrentMemorySize(String size) {
+        Log.d("messi", "setCurrentMemorySize size : " + size);
     }
 
-    @Override
-    public void setTotalRunningProcessSize(String size) {
-        Log.d("messi", "setTotalRunningProcessSize :" + size);
-    }
 
     @Override
     public void killedRunningProcess() {
@@ -111,12 +108,6 @@ public class MemoryFragment extends Fragment implements MemoryContract.DeepMemor
                 break;
             case R.id.btn_3:
                 mPresenter.getTotalMemorySize();
-                break;
-            case R.id.btn_4:
-                mPresenter.getCurrentMemorySize();
-                break;
-            case R.id.btn_5:
-                mPresenter.getTotalRunningProcessSize();
                 break;
             case R.id.btn_6:
                 mPresenter.killRunningProcess();

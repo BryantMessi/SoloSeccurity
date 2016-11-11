@@ -2,6 +2,9 @@ package com.solo.security.memory;
 
 import com.solo.security.BasePresenter;
 import com.solo.security.BaseView;
+import com.solo.security.data.Security;
+
+import java.util.List;
 
 /**
  * Created by Messi on 16-11-3.
@@ -10,9 +13,9 @@ import com.solo.security.BaseView;
 public interface MemoryContract {
 
     interface BaseMemoryView extends BaseView<BaseMemoryPresenter> {
-        void setCurrentMemorySize();
+        void setCurrentMemorySize(String size);
 
-        void setTotalRunningProcessSize(String size);
+        void setRunningProcessInfo(List<Security> securities);
 
         void killedRunningProcess();
     }
@@ -22,17 +25,15 @@ public interface MemoryContract {
     }
 
     interface DeepMemoryView extends BaseMemoryView {
-        void setRunningProcessInfo();
 
-        void setAvailableMemorySize();
+        void setAvailableMemorySize(String size);
 
-        void setTotalMemorySize();
+        void setTotalMemorySize(String size);
     }
 
     interface BaseMemoryPresenter extends BasePresenter {
-        void getCurrentMemorySize();
 
-        void getTotalRunningProcessSize();
+        void getRunningProcessInfo();
 
         void killRunningProcess();
     }
@@ -42,7 +43,6 @@ public interface MemoryContract {
     }
 
     interface DeepMemoryPresenter extends BaseMemoryPresenter {
-        void getRunningProcessInfo();
 
         void getAvailableMemorySize();
 
