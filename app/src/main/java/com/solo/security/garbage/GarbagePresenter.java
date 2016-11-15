@@ -1,10 +1,15 @@
 package com.solo.security.garbage;
 
 import android.support.annotation.NonNull;
+import android.widget.NumberPicker;
 
 import com.google.common.base.Preconditions;
+import com.solo.security.data.Security;
 import com.solo.security.data.garbagesource.GarbageData;
 import com.solo.security.data.garbagesource.GarbageDataImpl;
+
+import java.util.Formatter;
+import java.util.List;
 
 /**
  * Created by Messi on 16-11-4.
@@ -43,7 +48,7 @@ public class GarbagePresenter implements GarbageContract.DeepGarbagePresenter, G
 
     @Override
     public void loadCurrentGarbageSize() {
-        mData.loadCurrentGarbageSize(this);
+
     }
 
     @Override
@@ -72,22 +77,22 @@ public class GarbagePresenter implements GarbageContract.DeepGarbagePresenter, G
     }
 
     @Override
-    public void onMemoryFilesLoaded() {
+    public void onMemoryFilesLoaded(List<Security> securities) {
         mView.setMemoryFilesDetail();
     }
 
     @Override
-    public void onInstalledPackagesLoaded() {
+    public void onInstalledPackagesLoaded(List<Security> securities) {
         mView.setInstalledPackages();
     }
 
     @Override
-    public void onBigFilesLoaded() {
+    public void onBigFilesLoaded(List<Security> securities) {
         mView.setBigFilesDetail();
     }
 
     @Override
-    public void onCurrentGarbageSize() {
+    public void onCurrentGarbageSize(String size) {
         mView.setCurrentGarbageSize();
     }
 
@@ -97,12 +102,12 @@ public class GarbagePresenter implements GarbageContract.DeepGarbagePresenter, G
     }
 
     @Override
-    public void onCacheFilesLoaded() {
+    public void onCacheFilesLoaded(List<Security> securities) {
         mView.setCacheFilesDetail();
     }
 
     @Override
-    public void onTempFilesLoaded() {
+    public void onTempFilesLoaded(List<Security> securities) {
         mView.setTempFilesDetail();
     }
 }

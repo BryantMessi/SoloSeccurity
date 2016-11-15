@@ -1,9 +1,11 @@
 package com.solo.security.garbage;
 
 
+import android.Manifest;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.google.common.base.Preconditions;
 import com.solo.security.R;
+import com.solo.security.utils.PermissionsChecker;
 
 
 public class GarbageFragment extends Fragment implements GarbageContract.DeepGarbageView, View.OnClickListener {
@@ -58,6 +61,7 @@ public class GarbageFragment extends Fragment implements GarbageContract.DeepGar
     public void onResume() {
         super.onResume();
         mPreseneter.start();
+        isHavePermissions();
     }
 
     @Override
@@ -130,6 +134,23 @@ public class GarbageFragment extends Fragment implements GarbageContract.DeepGar
             case R.id.btn_7:
                 mPreseneter.loadBigFiles();
                 break;
+        }
+    }
+
+    public boolean isHavePermissions() {
+        try {
+            PermissionsChecker mPermissionChecker = new PermissionsChecker(getContext());
+            if (mPermissionChecker.lacksPermissions(Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.GET_PACKAGE_SIZE)) {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.GET_PACKAGE_SIZE}, 1);
+                return false;
+            } else {
+                return true;
+            }
+        } catch (Exception e) {
+            Log.d("messi", "permission exception : " + e.getMessage());
+            return true;
         }
     }
 }

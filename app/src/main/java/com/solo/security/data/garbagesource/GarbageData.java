@@ -1,31 +1,33 @@
 package com.solo.security.data.garbagesource;
 
+import com.solo.security.data.Security;
+
+import java.util.List;
+
 /**
  * Created by Messi on 16-11-3.
  */
 
 public interface GarbageData {
     interface BaseGarbageCallback {
-        void onCurrentGarbageSize();
+        void onCurrentGarbageSize(String size);
 
         void onAdFilesLoaded();
 
-        void onCacheFilesLoaded();
+        void onCacheFilesLoaded(List<Security> securities);
 
-        void onTempFilesLoaded();
+        void onTempFilesLoaded(List<Security> securities);
     }
 
     interface DeepGarbageCallback extends BaseGarbageCallback {
         void onResidualFilesLoaded();
 
-        void onMemoryFilesLoaded();
+        void onMemoryFilesLoaded(List<Security> securities);
 
-        void onInstalledPackagesLoaded();
+        void onInstalledPackagesLoaded(List<Security> securities);
 
-        void onBigFilesLoaded();
+        void onBigFilesLoaded(List<Security> securities);
     }
-
-    void loadCurrentGarbageSize(BaseGarbageCallback callback);
 
     void loadAdFiles(BaseGarbageCallback callback);
 

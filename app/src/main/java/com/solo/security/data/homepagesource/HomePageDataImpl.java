@@ -46,26 +46,6 @@ public class HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCall
     }
 
     @Override
-    public void onCurrentGarbageSize() {
-
-    }
-
-    @Override
-    public void onAdFilesLoaded() {
-
-    }
-
-    @Override
-    public void onCacheFilesLoaded() {
-
-    }
-
-    @Override
-    public void onTempFilesLoaded() {
-
-    }
-
-    @Override
     public void onScannedUnSafe() {
 
     }
@@ -82,6 +62,26 @@ public class HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCall
 
     @Override
     public void onFixedUnSafe() {
+
+    }
+
+    @Override
+    public void onCurrentGarbageSize(String size) {
+
+    }
+
+    @Override
+    public void onAdFilesLoaded() {
+
+    }
+
+    @Override
+    public void onCacheFilesLoaded(List<Security> securities) {
+
+    }
+
+    @Override
+    public void onTempFilesLoaded(List<Security> securities) {
 
     }
 }
