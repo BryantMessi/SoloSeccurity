@@ -97,7 +97,7 @@ public class GarbagePresenter implements GarbageContract.DeepGarbagePresenter, G
     }
 
     @Override
-    public void onAdFilesLoaded() {
+    public void onAdFilesLoaded(List<Security> securities) {
         mView.setAdFilesDetail();
     }
 
@@ -109,5 +109,10 @@ public class GarbagePresenter implements GarbageContract.DeepGarbagePresenter, G
     @Override
     public void onTempFilesLoaded(List<Security> securities) {
         mView.setTempFilesDetail();
+    }
+
+    @Override
+    public void onGarbageFilesCleaned() {
+
     }
 }

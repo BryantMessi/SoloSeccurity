@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Debug;
 import android.support.annotation.NonNull;
+import android.support.annotation.WorkerThread;
 import android.text.format.Formatter;
 
 import com.google.common.base.Preconditions;
@@ -41,7 +42,8 @@ public class MemoryDataImpl implements MemoryData {
     }
 
     @Override
-    public void getRunningProcessInfo(@NonNull DeepMemoryCallback callback) {
+    @WorkerThread
+    public void getRunningProcessInfo(@NonNull BaseMemoryCallback callback) {
 
         // 通过调用ActivityManager的getRunningAppProcesses()方法获得系统里所有正在运行的进程
         ArrayList<Security> memoryInfos = new ArrayList<>();

@@ -30,7 +30,7 @@ public interface MemoryData {
         void onTotalMemoryLoaded(String total);
     }
 
-    void getRunningProcessInfo(@NonNull DeepMemoryCallback callback);
+    void getRunningProcessInfo(@NonNull BaseMemoryCallback callback);
 
     void getRunningProcessPercent(@NonNull FastMemoryCallback callback);
 

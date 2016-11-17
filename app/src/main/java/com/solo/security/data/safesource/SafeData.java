@@ -1,5 +1,9 @@
 package com.solo.security.data.safesource;
 
+import com.solo.security.data.Security;
+
+import java.util.List;
+
 /**
  * Created by Messi on 16-11-4.
  */
@@ -7,9 +11,9 @@ package com.solo.security.data.safesource;
 public interface SafeData {
 
     interface BaseSafeCallback {
-        void onScannedUnSafe();
+        void onScanningUnSafe(int count);
 
-        void onScanFinished();
+        void onScanFinished(List<Security> securities);
 
         void onScanProgressChanged();
 

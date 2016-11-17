@@ -1,5 +1,7 @@
 package com.solo.security.homepage;
 
+import android.content.Context;
+
 import com.solo.security.BasePresenter;
 import com.solo.security.BaseView;
 
@@ -18,21 +20,41 @@ public interface HomePageContract {
 
         void updateScanAnim();
 
-        void updateScanStatus();
-
         void showScanResult();
 
-        void updateSafeScanEnable();
+        void updateSafeScanEnable(boolean enable);
+
+        void startSafeScanAnim();
+
+        void updateWhenUnSafe();
+
+        void stopSafeScanAnim();
+
+        void startMemoryAnim();
+
+        void updateCurrentMemorySize(String size);
+
+        void stopMemoryAnim();
+
+        void startGarbageAnim();
+
+        void updateCurrentGarbageSize(String size);
+
+        void stopGarbageAnim();
     }
 
     interface Presenter extends BasePresenter {
         void checkLaunchAnim();
 
-        void checkSafeScanEnable();
+        void checkSafeScanEnable(Context context);
 
         void startScan();
 
-        void fix();
+        void fixSafe();
+
+        void fixMemory();
+
+        void fixGarbage();
 
         void fixAll();
     }

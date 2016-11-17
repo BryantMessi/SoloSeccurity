@@ -4,6 +4,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
 import com.solo.security.R;
+import com.solo.security.data.homepagesource.HomePageDataImpl;
 
 public class HomePageActivity extends AppCompatActivity {
 
@@ -11,5 +12,14 @@ public class HomePageActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home_page);
+        HomePageFragment fragment = (HomePageFragment) getSupportFragmentManager().findFragmentById(R.id.fm_home);
+
+        if (fragment == null) {
+            fragment = HomePageFragment.newInstance(null, null);
+        }
+
+        HomePageDataImpl data = HomePageDataImpl.getInstance(this);
+
+        new HomePagePresenter(data, fragment);
     }
 }

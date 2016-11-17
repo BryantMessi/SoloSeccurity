@@ -61,7 +61,7 @@ public class GarbageFragment extends Fragment implements GarbageContract.DeepGar
     public void onResume() {
         super.onResume();
         mPreseneter.start();
-        isHavePermissions();
+//        isHavePermissions();
     }
 
     @Override

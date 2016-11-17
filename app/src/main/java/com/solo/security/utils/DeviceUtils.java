@@ -2,6 +2,8 @@ package com.solo.security.utils;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
@@ -66,4 +68,10 @@ public class DeviceUtils {
         return bool;
     }
 
+    public static boolean isNetworkAvailable(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo network = connMgr.getActiveNetworkInfo();
+        return network != null && network.isConnected();
+    }
 }

@@ -12,11 +12,13 @@ public interface GarbageData {
     interface BaseGarbageCallback {
         void onCurrentGarbageSize(String size);
 
-        void onAdFilesLoaded();
+        void onAdFilesLoaded(List<Security> securities);
 
         void onCacheFilesLoaded(List<Security> securities);
 
         void onTempFilesLoaded(List<Security> securities);
+
+        void onGarbageFilesCleaned();
     }
 
     interface DeepGarbageCallback extends BaseGarbageCallback {
@@ -42,4 +44,6 @@ public interface GarbageData {
     void loadInstalledPackages(DeepGarbageCallback callback);
 
     void loadBigFiles(DeepGarbageCallback callback);
+
+    void cleanGarbageFiles(BaseGarbageCallback callback);
 }

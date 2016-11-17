@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
+import com.solo.security.data.Security;
 import com.solo.security.utils.AppUtils;
 import com.solo.security.utils.DeviceUtils;
 import com.trustlook.sdk.cloudscan.CloudScanClient;
@@ -49,7 +50,7 @@ public class SafeDataImpl implements SafeData {
 
     }
 
-    private class GenerateAppInfo extends AsyncTask<Void, String, List<PkgInfo>> {
+    private class GenerateAppInfo extends AsyncTask<Void, Double, Void> {
 
         private CloudScanClient mClient;
         private List<PkgInfo> mPkgInfoList = new ArrayList<>();
@@ -62,73 +63,59 @@ public class SafeDataImpl implements SafeData {
         }
 
         @Override
-        protected List<PkgInfo> doInBackground(Void... params) {
+        protected void onProgressUpdate(Double... values) {
+            Log.d("messi", "scan progress :" + values[0]);
+            mCallback.onScanProgressChanged();
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
             List<PackageInfo> packageInfoList = AppUtils.getLocalAppsPkgInfo(mContext);
             for (PackageInfo pi : packageInfoList) {
                 if (pi != null && pi.applicationInfo != null) {
                     PkgInfo info = mClient.populatePkgInfo(pi.packageName, pi.applicationInfo.publicSourceDir);
                     mPkgInfoList.add(info);
                     Log.d("messi", "generate pkg :" + info.getPkgName());
-
                 }
             }
-            return mPkgInfoList;
-        }
 
-        @Override
-        protected void onPostExecute(List<PkgInfo> pkgInfos) {
-            //开始云查杀
-            if (pkgInfos != null) {
-                new CloudScanApps(mClient).execute(pkgInfos);
-            }
-        }
-    }
+            ScanResult result = mClient.cacheCheck(mPkgInfoList);
 
-
-    private class CloudScanApps extends AsyncTask<List<PkgInfo>, String, ScanResult> {
-        private CloudScanClient mClient;
-
-        CloudScanApps(CloudScanClient client) {
-            mClient = client;
-        }
-
-        @Override
-        protected void onProgressUpdate(String... values) {
-            Log.d("messi", "CloudScanApps onProgressUpdate " + values[0]);
-            int progress = Integer.parseInt(values[0]);
-            if (progress == 100) {
-                mCallback.onScanFinished();
-            } else {
-                mCallback.onScanProgressChanged();
-            }
-            super.onProgressUpdate(values);
-        }
-
-        @Override
-        protected ScanResult doInBackground(List<PkgInfo>... params) {
-            if (isCancelled()) {
-                return null;
-            }
-
-            return mClient.cloudScan(params[0]);
-        }
-
-        @Override
-        protected void onPostExecute(ScanResult scanResult) {
-            if (scanResult != null && scanResult.isSuccess()) {
-                List<AppInfo> appInfos = scanResult.getList();
-                if (appInfos != null) {
+            if (result != null && result.isSuccess()) {
+                List<AppInfo> appInfos = result.getList();
+                if (appInfos != null && !appInfos.isEmpty()) {
+                    List<Security> securities = new ArrayList<>();
+                    int unSafeCount = 0;
                     for (int i = 0; i < appInfos.size(); i++) {
                         AppInfo ai = appInfos.get(i);
+                        Security security = new Security();
+                        String packageName = ai.getPackageName();
+                        security.setPackageName(packageName);
+                        security.setIcon(AppUtils.getApplicationIcon(mContext, packageName));
+                        security.setLabel((String) AppUtils.getApplicationLabel(mContext, packageName));
                         Log.d("messi", "scan pkg :" + ai.getPackageName() + " score :" + ai.getScore());
                         if (ai.getScore() >= 8) {//8-10分为恶意应用
-                            String packageName = ai.getPackageName();
                             //TODO:回调
-                            mCallback.onScannedUnSafe();
+                            security.setInfo("Malware");
+                            unSafeCount++;
+                            mCallback.onScanningUnSafe(unSafeCount);
+                        } else {
+                            security.setInfo("safe");
                         }
+                        securities.add(security);
+                        publishProgress((double) (i * 100 / appInfos.size()));
                     }
+                    mCallback.onScanFinished(securities);
                 }
+            } else {
+                //TODO:云查杀失败
             }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
         }
     }
 }

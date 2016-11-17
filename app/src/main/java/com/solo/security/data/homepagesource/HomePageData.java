@@ -1,5 +1,10 @@
 package com.solo.security.data.homepagesource;
 
+import com.solo.security.data.Security;
+
+import java.util.List;
+import java.util.Map;
+
 /**
  * Created by Messi on 16-11-5.
  */
@@ -7,12 +12,35 @@ package com.solo.security.data.homepagesource;
 public interface HomePageData {
 
     interface HomePageDataCallback {
-        void onScanResult();
 
-        void onFixFinished();
+        void onUnSafeChecked();
+
+        void onCurrentMemorySize(String size);
+
+        void onCurrentGarbageSize(String size);
+
+        void onMemoryFixed();
+
+        void onGarbageFixed();
+
+        void onSafeFixed();
+
+        void onMemoryResult(List<Security> securities);
+
+        void onMemoryPercent(int percent);
+
+        void onGarbageResult(Map<String, List<Security>> securities);
+
+        void onSafeResult();
     }
 
-    void oneKeyScan(HomePageDataCallback callback);
+    void oneKeyScan();
 
-    void oneKeyFix(HomePageDataCallback callback);
+    void oneKeyFix();
+
+    void fixSafe();
+
+    void fixMemory();
+
+    void fixGarbage();
 }

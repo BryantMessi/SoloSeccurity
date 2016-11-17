@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageStats;
 import android.os.Environment;
 import android.os.RemoteException;
+import android.support.annotation.WorkerThread;
 import android.text.format.Formatter;
 import android.util.Log;
 
@@ -45,11 +46,13 @@ public class GarbageDataImpl implements GarbageData {
 
 
     @Override
+    @WorkerThread
     public void loadAdFiles(BaseGarbageCallback callback) {
-        callback.onAdFilesLoaded();
+        callback.onAdFilesLoaded(null);
     }
 
     @Override
+    @WorkerThread
     public void loadCacheFiles(BaseGarbageCallback callback) {
         try {
             List<String> installedPackages = AppUtils.getInstalledPackages(mContext);
@@ -88,6 +91,7 @@ public class GarbageDataImpl implements GarbageData {
     }
 
     @Override
+    @WorkerThread
     public void loadTempFiles(BaseGarbageCallback callback) {
         List<Security> securities = new ArrayList<>();
         if (FileUtils.isFileAvailable(SystemConstants.FILE_DATA_ANR)) {
@@ -143,11 +147,13 @@ public class GarbageDataImpl implements GarbageData {
     }
 
     @Override
+    @WorkerThread
     public void loadResidualFiles(DeepGarbageCallback callback) {
         callback.onResidualFilesLoaded();
     }
 
     @Override
+    @WorkerThread
     public void loadMemoryFiles(final DeepGarbageCallback callback) {
         MemoryDataImpl memoryData = MemoryDataImpl.getInstance(mContext);
         memoryData.getRunningProcessInfo(new MemoryData.DeepMemoryCallback() {
@@ -179,6 +185,7 @@ public class GarbageDataImpl implements GarbageData {
     }
 
     @Override
+    @WorkerThread
     public void loadInstalledPackages(DeepGarbageCallback callback) {
 
         List<Security> securities = new ArrayList<>();
@@ -217,6 +224,7 @@ public class GarbageDataImpl implements GarbageData {
     }
 
     @Override
+    @WorkerThread
     public void loadBigFiles(DeepGarbageCallback callback) {
         List<Security> securities = new ArrayList<>();
         if (FileUtils.isSDCardMounted()) {
@@ -242,6 +250,11 @@ public class GarbageDataImpl implements GarbageData {
         }
 
         callback.onBigFilesLoaded(securities);
+    }
+
+    @Override
+    public void cleanGarbageFiles(BaseGarbageCallback callback) {
+        callback.onGarbageFilesCleaned();
     }
 
     private List<Security> getGarbageFiles(File file, BaseGarbageCallback callback) {
