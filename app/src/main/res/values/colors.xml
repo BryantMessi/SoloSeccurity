@@ -3,4 +3,16 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <!--common-->
+    <color name="common_background">#FFFFFF</color>
+    <color name="common_btn_ok_rectangle_pressed">#40000000</color>
+    <color name="common_btn_ok_rectangle_normal">#FFefefef</color>
+    <color name="homepage_bg_gradient_startcolor">#6114ff</color>
+    <color name="homepage_bg_gradient_endcolor">#23a4ff</color>
+
+    <color name="thirty_five_black">#33000000</color>
+
+    <!--waveView-->
+    <color name="main_theme_accent">#ff486f</color>
 </resources>
