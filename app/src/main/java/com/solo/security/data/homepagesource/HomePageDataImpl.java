@@ -93,6 +93,16 @@ public enum HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCallb
     }
 
     @Override
+    public void onCurrentMemoryProgress(int progress) {
+        mCallback.onCurrentMemoryProgress(progress);
+    }
+
+    @Override
+    public void onFinishMemorySize(String size) {
+        mCallback.onFinishMemorySize(size);
+    }
+
+    @Override
     public void onRunningProcessKilled() {
         mCallback.onMemoryFixed();
     }
@@ -104,7 +114,7 @@ public enum HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCallb
 
     @Override
     public void onScanningUnSafe(int count) {
-        mCallback.onUnSafeChecked();
+        mCallback.onUnSafeChecked(count);
     }
 
     @Override
@@ -115,14 +125,15 @@ public enum HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCallb
     }
 
     @Override
-    public void onScanProgressChanged() {
-
+    public void onScanProgressChanged(double progress) {
+        mCallback.onCurrentProgress(progress);
     }
 
     @Override
     public void onFixedUnSafe() {
         mCallback.onSafeFixed();
     }
+
 
     @Override
     public void onCurrentGarbageSize(String size) {

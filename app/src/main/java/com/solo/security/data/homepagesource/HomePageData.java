@@ -13,9 +13,15 @@ public interface HomePageData {
 
     interface HomePageDataCallback {
 
-        void onUnSafeChecked();
+        void onUnSafeChecked(int count);
+
+        void onCurrentProgress(double progress);
 
         void onCurrentMemorySize(String size);
+
+        void onFinishMemorySize(String size);
+
+        void onCurrentMemoryProgress(int progress);
 
         void onCurrentGarbageSize(String size);
 

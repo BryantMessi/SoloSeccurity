@@ -2,8 +2,8 @@ package com.solo.security.homepage;
 
 import android.content.Context;
 
-import com.solo.security.BasePresenter;
-import com.solo.security.BaseView;
+import com.solo.security.common.BasePresenter;
+import com.solo.security.common.BaseView;
 
 /**
  * Created by Messi on 16-11-5.
@@ -12,6 +12,14 @@ import com.solo.security.BaseView;
 public interface HomePageContract {
 
     interface View extends BaseView<Presenter> {
+        void currentVirusProgress(double progress);
+
+        void currentMemoryProgress(int progress);
+
+        void finishMemorySize(String size);
+
+        void finishGarbageSize(String size);
+
         void showFirstLaunchAnim();
 
         void showCommonLaunchAnim();
@@ -26,7 +34,7 @@ public interface HomePageContract {
 
         void startSafeScanAnim();
 
-        void updateWhenUnSafe();
+        void updateWhenUnSafe(int count);
 
         void stopSafeScanAnim();
 

@@ -55,8 +55,8 @@ public enum SafeDataImpl implements SafeData {
 
         @Override
         protected void onProgressUpdate(Double... values) {
-            Log.d("messi", "scan progress :" + values[0]);
-            mCallback.onScanProgressChanged();
+            //  Log.d("messi", "scan progress :" + values[0]);
+            mCallback.onScanProgressChanged(values[0]);
         }
 
         @Override
@@ -66,7 +66,7 @@ public enum SafeDataImpl implements SafeData {
                 if (pi != null && pi.applicationInfo != null) {
                     PkgInfo info = mClient.populatePkgInfo(pi.packageName, pi.applicationInfo.publicSourceDir);
                     mPkgInfoList.add(info);
-                    Log.d("messi", "generate pkg :" + info.getPkgName());
+                    //  Log.d("messi", "generate pkg :" + info.getPkgName());
                 }
             }
 
@@ -86,15 +86,16 @@ public enum SafeDataImpl implements SafeData {
                         security.setLabel((String) AppUtils.getApplicationLabel(context, packageName));
                         Log.d("messi", "scan pkg :" + ai.getPackageName() + " score :" + ai.getScore());
                         if (ai.getScore() >= 8) {//8-10分为恶意应用
+                            //TODO:回调
                             security.setInfo("Malware");
                             unSafeCount++;
-                            mCallback.onScanningUnSafe(unSafeCount);
                         } else {
                             security.setInfo("safe");
                         }
                         securities.add(security);
                         publishProgress((double) (i * 100 / appInfos.size()));
                     }
+                    mCallback.onScanningUnSafe(unSafeCount);
                     mCallback.onScanFinished(securities);
                 }
             } else {

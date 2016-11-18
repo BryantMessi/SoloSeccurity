@@ -71,8 +71,13 @@ public class HomePagePresenter implements HomePageContract.Presenter, HomePageDa
     }
 
     @Override
-    public void onUnSafeChecked() {
-        mView.updateWhenUnSafe();
+    public void onUnSafeChecked(int count) {
+        mView.updateWhenUnSafe(count);
+    }
+
+    @Override
+    public void onCurrentProgress(double progress) {
+        mView.currentVirusProgress(progress);
     }
 
     @Override
@@ -81,8 +86,18 @@ public class HomePagePresenter implements HomePageContract.Presenter, HomePageDa
     }
 
     @Override
+    public void onFinishMemorySize(String size) {
+        mView.finishMemorySize(size);
+    }
+
+    @Override
+    public void onCurrentMemoryProgress(int progress) {
+        mView.currentMemoryProgress(progress);
+    }
+
+    @Override
     public void onCurrentGarbageSize(String size) {
-        mView.updateCurrentGarbageSize(size);
+
     }
 
     @Override
@@ -112,11 +127,21 @@ public class HomePagePresenter implements HomePageContract.Presenter, HomePageDa
 
     @Override
     public void onGarbageResult(Map<String, List<Security>> securities) {
+        List<Security> securitiesAd = securities.get(0);
+        int size;
+        /*for(Security security:securitiesAd){
+            size+=security.getSize();
+        }
+         (Security securitie : securities) {
+            securities.get()
+            mView.finishGarbageSize(size);
 
+        }*/
     }
 
     @Override
     public void onSafeResult() {
-
+        mView.stopSafeScanAnim();
     }
+
 }

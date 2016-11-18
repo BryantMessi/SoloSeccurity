@@ -46,7 +46,7 @@ public class SafePresenter implements SafeContract.BaseSafePresenter, SafeData.D
 
     @Override
     public void onScanningUnSafe(int count) {
-        mView.notifyScannedUnSafe();
+        mView.notifyScannedUnSafe(count);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class SafePresenter implements SafeContract.BaseSafePresenter, SafeData.D
     }
 
     @Override
-    public void onScanProgressChanged() {
+    public void onScanProgressChanged(double progress) {
         mView.updateScanProgress();
     }
 
@@ -63,4 +63,5 @@ public class SafePresenter implements SafeContract.BaseSafePresenter, SafeData.D
     public void onFixedUnSafe() {
         mView.scanResultFixed();
     }
+
 }

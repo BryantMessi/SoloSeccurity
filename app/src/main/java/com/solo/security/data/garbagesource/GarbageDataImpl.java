@@ -163,6 +163,16 @@ public enum GarbageDataImpl implements GarbageData {
             }
 
             @Override
+            public void onCurrentMemoryProgress(int progress) {
+
+            }
+
+            @Override
+            public void onFinishMemorySize(String size) {
+
+            }
+
+            @Override
             public void onRunningProcessKilled() {
 
             }

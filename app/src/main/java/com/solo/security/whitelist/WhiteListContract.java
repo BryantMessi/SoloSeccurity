@@ -1,7 +1,7 @@
 package com.solo.security.whitelist;
 
-import com.solo.security.BasePresenter;
-import com.solo.security.BaseView;
+import com.solo.security.common.BasePresenter;
+import com.solo.security.common.BaseView;
 
 /**
  * Created by Messi on 16-11-4.

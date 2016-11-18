@@ -16,6 +16,7 @@ import java.util.List;
  */
 
 public class AppUtils {
+    private static final int DEFAULT_SCREEN_STATUSBAR = 75;
 
     public static Drawable getApplicationIcon(Context context, String packageName) {
         try {
@@ -86,5 +87,27 @@ public class AppUtils {
             }
         }
         return new ArrayList<PackageInfo>();
+    }
+
+    /**
+     * 获得状态栏的高度
+     *
+     * @param context
+     * @return
+     */
+    public static int getStatusHeight(Context context) {
+        int statusHeight = DEFAULT_SCREEN_STATUSBAR;
+        try {
+            Class clazz = Class.forName("com.android.internal.R$dimen");
+            Object object = clazz.newInstance();
+            int height = Integer.parseInt(clazz.getField("status_bar_height")
+                    .get(object).toString());
+            statusHeight = context.getResources().getDimensionPixelSize(height);
+        } catch (IllegalAccessException e) {
+        } catch (InstantiationException e) {
+        } catch (NoSuchFieldException e) {
+        } catch (ClassNotFoundException e) {
+        }
+        return statusHeight;
     }
 }

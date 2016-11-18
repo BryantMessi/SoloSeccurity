@@ -15,7 +15,7 @@ public interface SafeData {
 
         void onScanFinished(List<Security> securities);
 
-        void onScanProgressChanged();
+        void onScanProgressChanged(double progress);
 
         void onFixedUnSafe();
     }

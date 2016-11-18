@@ -1,7 +1,7 @@
 package com.solo.security.memory;
 
-import com.solo.security.BasePresenter;
-import com.solo.security.BaseView;
+import com.solo.security.common.BasePresenter;
+import com.solo.security.common.BaseView;
 import com.solo.security.data.Security;
 
 import java.util.List;

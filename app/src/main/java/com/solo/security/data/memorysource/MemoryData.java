@@ -14,6 +14,10 @@ public interface MemoryData {
     interface BaseMemoryCallback {
         void onCurrentMemorySize(String size);
 
+        void onCurrentMemoryProgress(int progress);
+
+        void onFinishMemorySize(String size);
+
         void onRunningProcessKilled();
 
         void onRunningProcessInfo(List<Security> runningProcessInfoList);

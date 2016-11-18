@@ -2,7 +2,6 @@ package com.solo.security.data.memorysource;
 
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Debug;
 import android.support.annotation.NonNull;
@@ -68,12 +67,15 @@ public enum MemoryDataImpl implements MemoryData {
 
                 currentScannedSize += memSize;
                 callback.onCurrentMemorySize(Formatter.formatFileSize(context, currentScannedSize));
+                callback.onCurrentMemoryProgress((i+1) * 100 / size);
+                callback.onCurrentMemorySize(Formatter.formatFileSize(context, currentScannedSize));
             }
         } else {
             List<ProcessInfo> processInfos = ProcessManager.getRunningProcessInfo();
-            for (ProcessInfo process : processInfos) {
-                int pid = process.getPid();
-                String packageName = process.getProcessName();
+            int size = processInfos.size();
+            for (int i = 0; i < size; i++) {
+                int pid = processInfos.get(i).getPid();
+                String packageName = processInfos.get(i).getProcessName();
 
                 Security memory = new Security();
                 memory.setLabel((String) AppUtils.getApplicationLabel(context, packageName));
@@ -90,8 +92,11 @@ public enum MemoryDataImpl implements MemoryData {
 
                 currentScannedSize += memSize;
                 callback.onCurrentMemorySize(Formatter.formatFileSize(context, currentScannedSize));
+                callback.onCurrentMemoryProgress((i+1) * 100/size);
+                callback.onCurrentMemorySize(Formatter.formatFileSize(context, currentScannedSize));
             }
         }
+        callback.onFinishMemorySize(Formatter.formatFileSize(context, currentScannedSize));
         callback.onRunningProcessInfo(memoryInfos);
     }
 

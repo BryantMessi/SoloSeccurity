@@ -1,7 +1,8 @@
 package com.solo.security.safe;
 
-import com.solo.security.BasePresenter;
-import com.solo.security.BaseView;
+
+import com.solo.security.common.BasePresenter;
+import com.solo.security.common.BaseView;
 
 /**
  * Created by Messi on 16-11-4.
@@ -10,7 +11,7 @@ import com.solo.security.BaseView;
 public interface SafeContract {
 
     interface BaseSafeView extends BaseView<BaseSafePresenter> {
-        void notifyScannedUnSafe();
+        void notifyScannedUnSafe(int count);
 
         void updateScanProgress();
 

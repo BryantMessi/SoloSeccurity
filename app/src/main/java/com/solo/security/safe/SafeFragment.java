@@ -63,7 +63,7 @@ public class SafeFragment extends Fragment implements SafeContract.DeepSafeView,
     }
 
     @Override
-    public void notifyScannedUnSafe() {
+    public void notifyScannedUnSafe(int count) {
 
     }
 
