@@ -1,5 +1,9 @@
 package com.solo.security.data.whitelistsource;
 
+import com.solo.security.data.Security;
+
+import java.util.List;
+
 /**
  * Created by Messi on 16-11-4.
  */
@@ -7,8 +11,16 @@ package com.solo.security.data.whitelistsource;
 public interface WhiteListData {
 
     interface WhiteListDataCallback {
-        void onDataLoaded();
+        void onMemoryListLoaded(List<Security> securities);
+
+        void onSafeListLoaded(List<Security> securities);
+
+        void onEmptyMemoryList();
+
+        void onEmptySafeList();
     }
 
-    void loadWhiteList(WhiteListDataCallback callback);
+    void loadMemoryWhiteList(WhiteListDataCallback callback);
+
+    void loadSafeWhiteList(WhiteListDataCallback callback);
 }

@@ -10,7 +10,13 @@ import com.solo.security.BaseView;
 public interface WhiteListContract {
 
     interface View extends BaseView<Presenter> {
-        void showWhiteListPage();
+        void showMemoryListPage();
+
+        void showEmptyMemoryPage();
+
+        void showSafeListPage();
+
+        void showEmptySafePage();
 
         void showAddPage();
     }

@@ -50,7 +50,22 @@ public class WhiteListFragment extends Fragment implements WhiteListContract.Vie
     }
 
     @Override
-    public void showWhiteListPage() {
+    public void showMemoryListPage() {
+
+    }
+
+    @Override
+    public void showEmptyMemoryPage() {
+
+    }
+
+    @Override
+    public void showSafeListPage() {
+
+    }
+
+    @Override
+    public void showEmptySafePage() {
 
     }
 
