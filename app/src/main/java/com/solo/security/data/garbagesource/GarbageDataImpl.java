@@ -11,6 +11,7 @@ import android.text.format.Formatter;
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
+import com.solo.security.SecurityApplication;
 import com.solo.security.contansts.SystemConstants;
 import com.solo.security.data.Security;
 import com.solo.security.data.memorysource.MemoryData;
@@ -28,22 +29,9 @@ import java.util.List;
  * Created by Messi on 16-11-4.
  */
 
-public class GarbageDataImpl implements GarbageData {
+public enum GarbageDataImpl implements GarbageData {
 
-    private static GarbageDataImpl sInstance;
-    private Context mContext;
-
-    private GarbageDataImpl(Context context) {
-        mContext = Preconditions.checkNotNull(context, "Context is null");
-    }
-
-    public static GarbageDataImpl getInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new GarbageDataImpl(context);
-        }
-        return sInstance;
-    }
-
+    INSTANCE;
 
     @Override
     @WorkerThread
@@ -55,10 +43,11 @@ public class GarbageDataImpl implements GarbageData {
     @WorkerThread
     public void loadCacheFiles(BaseGarbageCallback callback) {
         try {
-            List<String> installedPackages = AppUtils.getInstalledPackages(mContext);
+            final Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
+            List<String> installedPackages = AppUtils.getInstalledPackages(context);
             if (!installedPackages.isEmpty()) {
                 final List<Security> securities = new ArrayList<>();
-                PackageManager pm = mContext.getPackageManager();
+                PackageManager pm = context.getPackageManager();
                 Method getPackageSizeInfo = pm.getClass().getMethod(
                         "getPackageSizeInfo", String.class, IPackageStatsObserver.class);
 
@@ -68,12 +57,12 @@ public class GarbageDataImpl implements GarbageData {
                         public void onGetStatsCompleted(final PackageStats pStats, boolean succeeded)
                                 throws RemoteException {
                             Security bean = new Security();
-                            bean.setIcon(AppUtils.getApplicationIcon(mContext, pkg));
-                            bean.setLabel((String) AppUtils.getApplicationLabel(mContext, pkg));
-                            String size = Formatter.formatFileSize(mContext, pStats.cacheSize);
+                            bean.setIcon(AppUtils.getApplicationIcon(context, pkg));
+                            bean.setLabel((String) AppUtils.getApplicationLabel(context, pkg));
+                            String size = Formatter.formatFileSize(context, pStats.cacheSize);
                             bean.setSize(size);
                             securities.add(bean);
-                            Log.d("messi", "cache file name :" + AppUtils.getApplicationLabel(mContext, pkg) + " size :" + Formatter.formatFileSize(mContext, pStats.cacheSize));
+                            Log.d("messi", "cache file name :" + AppUtils.getApplicationLabel(context, pkg) + " size :" + Formatter.formatFileSize(context, pStats.cacheSize));
 
                         }
                     });
@@ -94,6 +83,7 @@ public class GarbageDataImpl implements GarbageData {
     @WorkerThread
     public void loadTempFiles(BaseGarbageCallback callback) {
         List<Security> securities = new ArrayList<>();
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
         if (FileUtils.isFileAvailable(SystemConstants.FILE_DATA_ANR)) {
             securities.addAll(getGarbageFiles(SystemConstants.FILE_DATA_ANR, callback));
         }
@@ -134,7 +124,7 @@ public class GarbageDataImpl implements GarbageData {
                     if (file.length() == 0) {//空白文件
                         Security bean = new Security();
                         bean.setLabel(file.getName());
-                        bean.setSize(Formatter.formatFileSize(mContext, file.length()));
+                        bean.setSize(Formatter.formatFileSize(context, file.length()));
                         securities.add(bean);
                     }
                 }
@@ -155,7 +145,7 @@ public class GarbageDataImpl implements GarbageData {
     @Override
     @WorkerThread
     public void loadMemoryFiles(final DeepGarbageCallback callback) {
-        MemoryDataImpl memoryData = MemoryDataImpl.getInstance(mContext);
+        MemoryDataImpl memoryData = MemoryDataImpl.INSTANCE;
         memoryData.getRunningProcessInfo(new MemoryData.DeepMemoryCallback() {
             @Override
             public void onAvailableMemoryLoaded(String available) {
@@ -187,7 +177,7 @@ public class GarbageDataImpl implements GarbageData {
     @Override
     @WorkerThread
     public void loadInstalledPackages(DeepGarbageCallback callback) {
-
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
         List<Security> securities = new ArrayList<>();
         if (FileUtils.isSDCardMounted()) {
             List<File> files = new ArrayList<>();
@@ -201,14 +191,14 @@ public class GarbageDataImpl implements GarbageData {
                             Security security = new Security();
                             security.setLabel(name);
                             securities.add(security);
-                            String size = Formatter.formatFileSize(mContext, file.length());
+                            String size = Formatter.formatFileSize(context, file.length());
                             security.setSize(size);
                             callback.onCurrentGarbageSize(size);
-                        } else if (AppUtils.isAppInstalled(mContext, name.substring(0, name.lastIndexOf(".")))) {
+                        } else if (AppUtils.isAppInstalled(context, name.substring(0, name.lastIndexOf(".")))) {
                             Security security = new Security();
                             security.setLabel(name);
                             securities.add(security);
-                            String size = Formatter.formatFileSize(mContext, file.length());
+                            String size = Formatter.formatFileSize(context, file.length());
                             security.setSize(size);
                             callback.onCurrentGarbageSize(size);
                         }
@@ -226,6 +216,7 @@ public class GarbageDataImpl implements GarbageData {
     @Override
     @WorkerThread
     public void loadBigFiles(DeepGarbageCallback callback) {
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
         List<Security> securities = new ArrayList<>();
         if (FileUtils.isSDCardMounted()) {
             List<File> files = new ArrayList<>();
@@ -236,7 +227,7 @@ public class GarbageDataImpl implements GarbageData {
                         //大文件
                         Security security = new Security();
                         security.setLabel(file.getName());
-                        String size = Formatter.formatFileSize(mContext, file.length());
+                        String size = Formatter.formatFileSize(context, file.length());
                         security.setSize(size);
                         securities.add(security);
                         callback.onCurrentGarbageSize(size);
@@ -258,6 +249,7 @@ public class GarbageDataImpl implements GarbageData {
     }
 
     private List<Security> getGarbageFiles(File file, BaseGarbageCallback callback) {
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
         List<Security> securities = new ArrayList<>();
         List<File> files = new ArrayList<>();
         files = FileUtils.getFiles(file, files);
@@ -265,7 +257,7 @@ public class GarbageDataImpl implements GarbageData {
             for (File f : files) {
                 Security bean = new Security();
                 bean.setLabel(f.getName());
-                String size = Formatter.formatFileSize(mContext, f.length());
+                String size = Formatter.formatFileSize(context, f.length());
                 bean.setSize(size);
                 securities.add(bean);
                 callback.onCurrentGarbageSize(size);

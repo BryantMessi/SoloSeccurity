@@ -19,7 +19,7 @@ public class SafeActivity extends AppCompatActivity {
             fragment = SafeFragment.newInstance(null, null);
         }
 
-        SafeDataImpl data = SafeDataImpl.getInstance(this);
+        SafeDataImpl data = SafeDataImpl.INSTANCE;
 
         new SafePresenter(data, fragment);
     }

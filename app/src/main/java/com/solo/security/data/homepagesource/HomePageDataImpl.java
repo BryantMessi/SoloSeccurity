@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 
 import com.google.common.base.Preconditions;
+import com.solo.security.SecurityApplication;
 import com.solo.security.data.Security;
 import com.solo.security.data.garbagesource.GarbageData;
 import com.solo.security.data.garbagesource.GarbageDataImpl;
@@ -21,11 +22,11 @@ import java.util.Map;
  * Created by Messi on 16-11-5.
  */
 
-public class HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCallback, SafeData.BaseSafeCallback
+public enum HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCallback, SafeData.BaseSafeCallback
         , GarbageData.BaseGarbageCallback {
 
-    private static HomePageDataImpl sInstance;
-    private Context mContext;
+    INSTANCE;
+
     private HomePageDataCallback mCallback;
     private MemoryDataImpl mMemory;
     private SafeDataImpl mSafe;
@@ -33,19 +34,11 @@ public class HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCall
 
     private Map<String, List<Security>> mGarbageFiles;
 
-    private HomePageDataImpl(@NonNull Context context) {
-        mContext = Preconditions.checkNotNull(context);
-        mMemory = MemoryDataImpl.getInstance(mContext);
-        mSafe = SafeDataImpl.getInstance(mContext);
-        mGarbage = GarbageDataImpl.getInstance(mContext);
+    public void init() {
+        mMemory = MemoryDataImpl.INSTANCE;
+        mSafe = SafeDataImpl.INSTANCE;
+        mGarbage = GarbageDataImpl.INSTANCE;
         mGarbageFiles = new HashMap<>();
-    }
-
-    public static HomePageDataImpl getInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new HomePageDataImpl(context);
-        }
-        return sInstance;
     }
 
     public void setCallback(@NonNull HomePageDataCallback callback) {
@@ -55,7 +48,8 @@ public class HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCall
     @Override
     public void oneKeyScan() {
         //TODO:分别调用三个模块的扫描功能；
-        if (DeviceUtils.isNetworkAvailable(mContext)) {
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
+        if (DeviceUtils.isNetworkAvailable(context)) {
             mSafe.cloudSafeScan(this);
         } else {
             mMemory.getRunningProcessInfo(this);

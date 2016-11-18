@@ -13,7 +13,7 @@ public class MemoryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_memory);
 
-        MemoryDataImpl data = MemoryDataImpl.getInstance(this);
+        MemoryDataImpl data = MemoryDataImpl.INSTANCE;
 
         MemoryFragment fragment = (MemoryFragment) getSupportFragmentManager().findFragmentById(R.id.fm_memory);
         if (fragment == null) {
