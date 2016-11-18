@@ -1,4 +1,4 @@
-package com.solo.security;
+package com.solo.security.common;
 
 /**
  * Created by Messi on 16-11-3.

@@ -1,4 +1,4 @@
-package com.solo.security;
+package com.solo.security.common;
 
 import android.support.annotation.NonNull;
 
