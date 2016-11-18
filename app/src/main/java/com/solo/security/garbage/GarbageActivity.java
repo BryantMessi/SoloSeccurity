@@ -18,7 +18,7 @@ public class GarbageActivity extends AppCompatActivity {
             fragment = GarbageFragment.newInstance(null, null);
         }
 
-        GarbageDataImpl data = GarbageDataImpl.getInstance(this);
+        GarbageDataImpl data = GarbageDataImpl.INSTANCE;
 
         new GarbagePresenter(data, fragment);
     }

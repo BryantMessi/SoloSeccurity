@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.common.base.Preconditions;
+import com.solo.security.SecurityApplication;
 import com.solo.security.data.Security;
 import com.solo.security.utils.AppUtils;
 import com.solo.security.utils.DeviceUtils;
@@ -22,22 +23,11 @@ import java.util.List;
  * Created by Messi on 16-11-4.
  */
 
-public class SafeDataImpl implements SafeData {
+public enum SafeDataImpl implements SafeData {
 
-    private static SafeDataImpl sInstance;
-    private Context mContext;
+    INSTANCE;
+
     private BaseSafeCallback mCallback;
-
-    private SafeDataImpl(Context context) {
-        mContext = Preconditions.checkNotNull(context, "Context is null");
-    }
-
-    public static SafeDataImpl getInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new SafeDataImpl(context);
-        }
-        return sInstance;
-    }
 
     @Override
     public void cloudSafeScan(BaseSafeCallback callback) {
@@ -52,12 +42,13 @@ public class SafeDataImpl implements SafeData {
 
     private class GenerateAppInfo extends AsyncTask<Void, Double, Void> {
 
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
         private CloudScanClient mClient;
         private List<PkgInfo> mPkgInfoList = new ArrayList<>();
 
         GenerateAppInfo() {//FIXME:需要修改token
-            mClient = new CloudScanClient.Builder().setContext(mContext).setConnectionTimeout(3000)
-                    .setSocketTimeout(5000).setDeviceId(DeviceUtils.getDeviceId(mContext)).setRegion(Region.INTL)
+            mClient = new CloudScanClient.Builder().setContext(context).setConnectionTimeout(3000)
+                    .setSocketTimeout(5000).setDeviceId(DeviceUtils.getDeviceId(context)).setRegion(Region.INTL)
                     .setToken("1111").setVerbose(1)
                     .build();
         }
@@ -70,7 +61,7 @@ public class SafeDataImpl implements SafeData {
 
         @Override
         protected Void doInBackground(Void... params) {
-            List<PackageInfo> packageInfoList = AppUtils.getLocalAppsPkgInfo(mContext);
+            List<PackageInfo> packageInfoList = AppUtils.getLocalAppsPkgInfo(context);
             for (PackageInfo pi : packageInfoList) {
                 if (pi != null && pi.applicationInfo != null) {
                     PkgInfo info = mClient.populatePkgInfo(pi.packageName, pi.applicationInfo.publicSourceDir);
@@ -91,11 +82,10 @@ public class SafeDataImpl implements SafeData {
                         Security security = new Security();
                         String packageName = ai.getPackageName();
                         security.setPackageName(packageName);
-                        security.setIcon(AppUtils.getApplicationIcon(mContext, packageName));
-                        security.setLabel((String) AppUtils.getApplicationLabel(mContext, packageName));
+                        security.setIcon(AppUtils.getApplicationIcon(context, packageName));
+                        security.setLabel((String) AppUtils.getApplicationLabel(context, packageName));
                         Log.d("messi", "scan pkg :" + ai.getPackageName() + " score :" + ai.getScore());
                         if (ai.getScore() >= 8) {//8-10分为恶意应用
-                            //TODO:回调
                             security.setInfo("Malware");
                             unSafeCount++;
                             mCallback.onScanningUnSafe(unSafeCount);

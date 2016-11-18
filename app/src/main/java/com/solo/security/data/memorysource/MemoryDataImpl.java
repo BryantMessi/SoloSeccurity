@@ -10,6 +10,7 @@ import android.support.annotation.WorkerThread;
 import android.text.format.Formatter;
 
 import com.google.common.base.Preconditions;
+import com.solo.security.SecurityApplication;
 import com.solo.security.data.Security;
 import com.solo.security.data.memorysource.bean.ProcessInfo;
 import com.solo.security.data.memorysource.utils.ProcessManager;
@@ -23,33 +24,22 @@ import java.util.List;
  * Created by Messi on 16-11-3.
  */
 
-public class MemoryDataImpl implements MemoryData {
+public enum MemoryDataImpl implements MemoryData {
 
+    INSTANCE;
     private static final String TAG = MemoryDataImpl.class.getSimpleName();
 
-    private static MemoryDataImpl sInstance;
-    private Context mContext;
-
-    private MemoryDataImpl(Context context) {
-        mContext = Preconditions.checkNotNull(context, "Context is null");
-    }
-
-    public static MemoryDataImpl getInstance(Context context) {
-        if (sInstance == null) {
-            sInstance = new MemoryDataImpl(context);
-        }
-        return sInstance;
-    }
 
     @Override
     @WorkerThread
     public void getRunningProcessInfo(@NonNull BaseMemoryCallback callback) {
 
         // 通过调用ActivityManager的getRunningAppProcesses()方法获得系统里所有正在运行的进程
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
         ArrayList<Security> memoryInfos = new ArrayList<>();
         long currentScannedSize = 0;
-        ActivityManager am = (ActivityManager) mContext.getSystemService(Context.ACTIVITY_SERVICE);
-        PackageManager pm = mContext.getPackageManager();
+        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+//        PackageManager pm = context.getPackageManager();
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
             List<ActivityManager.RunningAppProcessInfo> appProcessList = am.getRunningAppProcesses();
@@ -70,14 +60,14 @@ public class MemoryDataImpl implements MemoryData {
 
                 String[] packageList = appProcessInfo.pkgList;
                 Security security = new Security();
-                security.setIcon(AppUtils.getApplicationIcon(mContext, packageList[i]));
-                security.setLabel((String) AppUtils.getApplicationLabel(mContext, packageList[i]));
-                security.setSize(Formatter.formatFileSize(mContext, memSize));
+                security.setIcon(AppUtils.getApplicationIcon(context, packageList[i]));
+                security.setLabel((String) AppUtils.getApplicationLabel(context, packageList[i]));
+                security.setSize(Formatter.formatFileSize(context, memSize));
                 security.setPackageName(processName);
                 memoryInfos.add(security);
 
                 currentScannedSize += memSize;
-                callback.onCurrentMemorySize(Formatter.formatFileSize(mContext, currentScannedSize));
+                callback.onCurrentMemorySize(Formatter.formatFileSize(context, currentScannedSize));
             }
         } else {
             List<ProcessInfo> processInfos = ProcessManager.getRunningProcessInfo();
@@ -86,8 +76,8 @@ public class MemoryDataImpl implements MemoryData {
                 String packageName = process.getProcessName();
 
                 Security memory = new Security();
-                memory.setLabel((String) AppUtils.getApplicationLabel(mContext, packageName));
-                memory.setIcon(AppUtils.getApplicationIcon(mContext, packageName));
+                memory.setLabel((String) AppUtils.getApplicationLabel(context, packageName));
+                memory.setIcon(AppUtils.getApplicationIcon(context, packageName));
 
                 int[] pids = new int[]{pid};
                 // 此MemoryInfo位于android.os.Debug.MemoryInfo包中，用来统计进程的内存信息
@@ -95,11 +85,11 @@ public class MemoryDataImpl implements MemoryData {
                 // 获取进程占内存用信息 kb单位
                 int memSize = memoryInfo[0].dalvikPrivateDirty;//单位是kb
 
-                memory.setSize(Formatter.formatFileSize(mContext, memSize));
+                memory.setSize(Formatter.formatFileSize(context, memSize));
                 memoryInfos.add(memory);
 
                 currentScannedSize += memSize;
-                callback.onCurrentMemorySize(Formatter.formatFileSize(mContext, currentScannedSize));
+                callback.onCurrentMemorySize(Formatter.formatFileSize(context, currentScannedSize));
             }
         }
         callback.onRunningProcessInfo(memoryInfos);
@@ -108,8 +98,9 @@ public class MemoryDataImpl implements MemoryData {
 
     @Override
     public void getRunningProcessPercent(@NonNull FastMemoryCallback callback) {
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
         long total = ProcessManager.getTotalMemorySize();
-        long ava = ProcessManager.getAvailableMemorySize(mContext);
+        long ava = ProcessManager.getAvailableMemorySize(context);
         double temp = (double) (total - ava);
         double percent = (temp / total) * 100;
         DecimalFormat df = new DecimalFormat("###");
@@ -118,14 +109,16 @@ public class MemoryDataImpl implements MemoryData {
 
     @Override
     public void getAvailableMemorySize(@NonNull DeepMemoryCallback callback) {
-        long ava = ProcessManager.getAvailableMemorySize(mContext);
-        callback.onAvailableMemoryLoaded(Formatter.formatFileSize(mContext, ava));
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
+        long ava = ProcessManager.getAvailableMemorySize(context);
+        callback.onAvailableMemoryLoaded(Formatter.formatFileSize(context, ava));
     }
 
     @Override
     public void getTotalMemorySize(@NonNull DeepMemoryCallback callback) {
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
         long total = ProcessManager.getTotalMemorySize();
-        callback.onTotalMemoryLoaded(Formatter.formatFileSize(mContext, total));
+        callback.onTotalMemoryLoaded(Formatter.formatFileSize(context, total));
     }
 
     @Override

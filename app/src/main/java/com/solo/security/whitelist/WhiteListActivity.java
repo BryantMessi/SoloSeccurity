@@ -18,7 +18,7 @@ public class WhiteListActivity extends AppCompatActivity {
             fragment = WhiteListFragment.newInstance(null, null);
         }
 
-        WhiteListDataImpl data = WhiteListDataImpl.getInstance(this);
+        WhiteListDataImpl data = WhiteListDataImpl.INSTANCE;
 
         new WhiteListPresenter(data, fragment);
     }

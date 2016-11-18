@@ -18,8 +18,8 @@ public class HomePageActivity extends AppCompatActivity {
             fragment = HomePageFragment.newInstance(null, null);
         }
 
-        HomePageDataImpl data = HomePageDataImpl.getInstance(this);
-
+        HomePageDataImpl data = HomePageDataImpl.INSTANCE;
+        data.init();
         new HomePagePresenter(data, fragment);
     }
 }
