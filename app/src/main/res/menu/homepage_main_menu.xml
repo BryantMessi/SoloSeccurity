@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_forget"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="忽略列表"/>
+
+    <item
+        android:id="@+id/action_backup"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="版本升级"/>
+
+    <item
+        android:id="@+id/feedback"
+        android:orderInCategory="100"
+        app:showAsAction="never"
+        android:title="意见反馈"/>
+
+</menu>

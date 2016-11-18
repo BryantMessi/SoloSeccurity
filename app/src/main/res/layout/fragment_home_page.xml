@@ -1,46 +1,170 @@
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.solo.security.homepage.HomePageFragment">
+    android:background="@drawable/main_bg_gradient"
+    tools:context="com.solo.security.homepage.HomePageActivity">
 
-    <Button
-        android:id="@+id/btn_one_key"
-        android:layout_width="200dp"
+    <include layout="@layout/common_bar_layout" />
+
+    <RelativeLayout
+        android:id="@+id/homepage_one_key_scan_rlyt"
+        android:layout_width="match_parent"
+        android:layout_height="310dp"
+        android:layout_below="@id/toolbar_llyt"
+        android:layout_marginTop="18dp">
+
+        <RelativeLayout
+            android:id="@+id/radar_rlyt"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true">
+            <!--一键扫描-->
+            <com.solo.security.homepage.view.HomePageOneKeyScanView
+                android:id="@+id/homepage_onekey_scan_vew"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+            <!--画圆的逐渐变化-->
+            <com.solo.security.homepage.view.HomePageCircleProgressView
+                android:id="@+id/homepage_circle_progress_vew"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:visibility="gone" />
+            <!--水波紋-->
+            <com.solo.security.homepage.view.HomePageCircleRippleView
+                android:id="@+id/homepage_circle_ripple_vew"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <com.solo.security.homepage.view.HomePageDrawRadianView
+                android:id="@+id/homepage_draw_radian_vew"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/homepage_safe_txt"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="OneKeyScan"/>
+        android:layout_below="@+id/homepage_one_key_scan_rlyt"
+        android:layout_centerHorizontal="true"
+        android:text="安全"
+        android:textColor="@android:color/white"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/homepage_progress_txt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/homepage_safe_txt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:text="保护中"
+        android:textColor="@android:color/white"
+        android:textSize="16dp" />
+
+    <com.solo.security.common.view.CommonWaveView
+        android:id="@+id/common_waveview"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:layout_alignParentBottom="true" />
 
     <LinearLayout
+        android:id="@+id/line_bottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginBottom="20dp"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/btn_safe"
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Safe"/>
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn_memory"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="Memory"/>
+            <ImageView
+                android:id="@+id/homepage_virus_killing_img"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@mipmap/homepage_scan_garbage_disposal_ic" />
 
-        <Button
-            android:id="@+id/btn_garbage"
-            android:layout_width="0dp"
+            <TextView
+                android:id="@+id/homepage_virus_killing_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:textColor="@color/common_background"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="病毒查杀"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center"
-            android:text="Garbage"/>
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/homepage_mobile_accelerator_img"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@mipmap/homepage_scan_mobile_accelerator_ic" />
+
+            <TextView
+                android:id="@+id/homepage_mobile_accelerator_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:textColor="@color/common_background"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手机加速"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/homepage_garbage_disposal_img"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:background="@mipmap/homepage_scan_virus_killing_ic" />
+
+            <TextView
+                android:id="@+id/homepage_garbage_disposal_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="32dp"
+                android:textColor="@color/common_background"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="垃圾处理"
+                android:textColor="@android:color/white"
+                android:textSize="14sp" />
+        </LinearLayout>
     </LinearLayout>
-
 </RelativeLayout>
