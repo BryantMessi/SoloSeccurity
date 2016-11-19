@@ -126,17 +126,8 @@ public class HomePagePresenter implements HomePageContract.Presenter, HomePageDa
     }
 
     @Override
-    public void onGarbageResult(Map<String, List<Security>> securities) {
-        List<Security> securitiesAd = securities.get(0);
-        int size;
-        /*for(Security security:securitiesAd){
-            size+=security.getSize();
-        }
-         (Security securitie : securities) {
-            securities.get()
-            mView.finishGarbageSize(size);
-
-        }*/
+    public void onGarbageResult(Map<String, List<Security>> securities,long garbageSize) {
+        mView.finishGarbageSize(garbageSize);
     }
 
     @Override

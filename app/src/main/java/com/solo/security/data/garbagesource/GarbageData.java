@@ -14,9 +14,9 @@ public interface GarbageData {
 
         void onAdFilesLoaded(List<Security> securities);
 
-        void onCacheFilesLoaded(List<Security> securities);
+        void onCacheFilesLoaded(List<Security> securities,long garbageSize);
 
-        void onTempFilesLoaded(List<Security> securities);
+        void onTempFilesLoaded(List<Security> securities,long garbageSize);
 
         void onGarbageFilesCleaned();
     }

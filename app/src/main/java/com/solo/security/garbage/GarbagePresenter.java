@@ -102,12 +102,12 @@ public class GarbagePresenter implements GarbageContract.DeepGarbagePresenter, G
     }
 
     @Override
-    public void onCacheFilesLoaded(List<Security> securities) {
+    public void onCacheFilesLoaded(List<Security> securities, long garbageSize) {
         mView.setCacheFilesDetail();
     }
 
     @Override
-    public void onTempFilesLoaded(List<Security> securities) {
+    public void onTempFilesLoaded(List<Security> securities, long garbageSize) {
         mView.setTempFilesDetail();
     }
 

@@ -66,7 +66,6 @@ public enum MemoryDataImpl implements MemoryData {
                 memoryInfos.add(security);
 
                 currentScannedSize += memSize;
-                callback.onCurrentMemorySize(Formatter.formatFileSize(context, currentScannedSize));
                 callback.onCurrentMemoryProgress((i+1) * 100 / size);
                 callback.onCurrentMemorySize(Formatter.formatFileSize(context, currentScannedSize));
             }
@@ -91,7 +90,6 @@ public enum MemoryDataImpl implements MemoryData {
                 memoryInfos.add(memory);
 
                 currentScannedSize += memSize;
-                callback.onCurrentMemorySize(Formatter.formatFileSize(context, currentScannedSize));
                 callback.onCurrentMemoryProgress((i+1) * 100/size);
                 callback.onCurrentMemorySize(Formatter.formatFileSize(context, currentScannedSize));
             }

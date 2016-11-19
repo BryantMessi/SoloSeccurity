@@ -35,7 +35,7 @@ public interface HomePageData {
 
         void onMemoryPercent(int percent);
 
-        void onGarbageResult(Map<String, List<Security>> securities);
+        void onGarbageResult(Map<String, List<Security>> securities,long garbageSize);
 
         void onSafeResult();
     }

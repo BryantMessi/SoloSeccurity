@@ -18,7 +18,7 @@ public interface HomePageContract {
 
         void finishMemorySize(String size);
 
-        void finishGarbageSize(String size);
+        void finishGarbageSize(long size);
 
         void showFirstLaunchAnim();
 

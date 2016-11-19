@@ -30,9 +30,8 @@ import java.util.List;
  */
 
 public enum GarbageDataImpl implements GarbageData {
-
     INSTANCE;
-
+    private long mGarbageSize;
     @Override
     @WorkerThread
     public void loadAdFiles(BaseGarbageCallback callback) {
@@ -60,6 +59,7 @@ public enum GarbageDataImpl implements GarbageData {
                             bean.setIcon(AppUtils.getApplicationIcon(context, pkg));
                             bean.setLabel((String) AppUtils.getApplicationLabel(context, pkg));
                             String size = Formatter.formatFileSize(context, pStats.cacheSize);
+                            mGarbageSize+=pStats.cacheSize;
                             bean.setSize(size);
                             securities.add(bean);
                             Log.d("messi", "cache file name :" + AppUtils.getApplicationLabel(context, pkg) + " size :" + Formatter.formatFileSize(context, pStats.cacheSize));
@@ -67,7 +67,7 @@ public enum GarbageDataImpl implements GarbageData {
                         }
                     });
                 }
-                callback.onCacheFilesLoaded(securities);
+                callback.onCacheFilesLoaded(securities,mGarbageSize);
             }
         } catch (NoSuchMethodException ex) {
             ex.printStackTrace();
@@ -124,6 +124,7 @@ public enum GarbageDataImpl implements GarbageData {
                     if (file.length() == 0) {//空白文件
                         Security bean = new Security();
                         bean.setLabel(file.getName());
+                        mGarbageSize+=file.length();
                         bean.setSize(Formatter.formatFileSize(context, file.length()));
                         securities.add(bean);
                     }
@@ -133,7 +134,7 @@ public enum GarbageDataImpl implements GarbageData {
         for (Security bean : securities) {
             Log.d("messi", "temp file name :" + bean.getLabel() + " size :" + bean.getSize());
         }
-        callback.onTempFilesLoaded(securities);
+        callback.onTempFilesLoaded(securities,mGarbageSize);
     }
 
     @Override
@@ -268,6 +269,7 @@ public enum GarbageDataImpl implements GarbageData {
                 Security bean = new Security();
                 bean.setLabel(f.getName());
                 String size = Formatter.formatFileSize(context, f.length());
+                mGarbageSize+=f.length();
                 bean.setSize(size);
                 securities.add(bean);
                 callback.onCurrentGarbageSize(size);

@@ -3,9 +3,11 @@ package com.solo.security.homepage;
 
 import android.animation.Animator;
 import android.animation.AnimatorInflater;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.text.format.Formatter;
 import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
@@ -14,13 +16,15 @@ import android.widget.TextView;
 
 import com.google.common.base.Preconditions;
 import com.solo.security.R;
+import com.solo.security.cleanfinish.CleanFinishActivity;
 import com.solo.security.common.BaseFragment;
+import com.solo.security.common.view.CommonCircleRippleView;
 import com.solo.security.common.view.CommonWaveHelper;
 import com.solo.security.common.view.CommonWaveView;
 import com.solo.security.homepage.view.HomePageCircleProgressView;
-import com.solo.security.homepage.view.HomePageCircleRippleView;
 import com.solo.security.homepage.view.HomePageDrawRadianView;
 import com.solo.security.homepage.view.HomePageOneKeyScanView;
+import com.solo.security.utils.AnimatorUtils;
 
 import butterknife.BindView;
 
@@ -61,7 +65,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
     HomePageOneKeyScanView mHomePageOneKeyScanView;
 
     @BindView(R.id.homepage_circle_ripple_vew)
-    HomePageCircleRippleView mHomePageCircleRippleView;
+    CommonCircleRippleView mCommonCircleRippleView;
 
     @BindView(R.id.homepage_virus_killing_img)
     ImageView mHomePageVirusKillingImg;
@@ -118,13 +122,13 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         int id = view.getId();
         switch (id) {
             case R.id.homepage_one_key_scan_rlyt:
-                mPresenter.startScan();
-                mCommonWaveHelper.start();
-                mHomePageSafeTxt.setText("正在扫描病毒");
                 mHomePageCircleProgressView.setVisibility(View.VISIBLE);
                 mHomePageDrawRadianView.setVisibility(View.VISIBLE);
-                mHomePageCircleRippleView.setVisibility(View.GONE);
+                mCommonCircleRippleView.setVisibility(View.GONE);
+                mCommonWaveHelper.start();
+                mHomePageSafeTxt.setText("正在扫描病毒");
                 mHomePageVirusKillingImg.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.homepage_scan_image_alpha));
+                mPresenter.startScan();
                 break;
         }
     }
@@ -134,7 +138,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         int scale = (int) (progress * 120 / 100);
         if ((int) progress == 99) {
             mHomePageVirusKillingImg.clearAnimation();
-            startRotateAnimator(mHomePageVirusKillingImg);
+            AnimatorUtils.startRotateAnimator(getContext(),mHomePageVirusKillingImg,R.animator.homepage_scan_anim_rotate_image_finish);
         } else {
             mHomePageOneKeyScanView.setSearch(true, scale);
             mHomePageCircleProgressView.setStartEngle(scale);
@@ -149,9 +153,9 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
             @Override
             public void run() {
                 int scale = (progress * 120 / 100)+ VIRUS_PROGRESS;
-                if (progress == 99) {
+                if (progress == 100) {
                     mHomePageMobileAcceleratorImg.clearAnimation();
-                    startRotateAnimator(mHomePageMobileAcceleratorImg);
+                    AnimatorUtils.startRotateAnimator(getContext(),mHomePageMobileAcceleratorImg,R.animator.homepage_scan_anim_rotate_image_finish);
                 }
                 mHomePageOneKeyScanView.setSearch(true,scale);
                 mHomePageCircleProgressView.setStartEngle(scale);
@@ -170,13 +174,25 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
                 mHomePageMobileAcceleratorImg.setVisibility(View.GONE);
                 mHomePageMobileAcceleratorTxt.setVisibility(View.VISIBLE);
                 mHomePageMobileAcceleratorTxt.setText(size);
+                mHomePageGarbageDisposalImg.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.homepage_scan_image_alpha));
             }
         });
     }
 
     @Override
-    public void finishGarbageSize(String size) {
-
+    public void finishGarbageSize(final long size) {
+        mHomePageGarbageDisposalTxt.post(new Runnable() {
+            @Override
+            public void run() {
+                mHomePageGarbageDisposalImg.clearAnimation();
+                AnimatorUtils.startRotateAnimator(getContext(),mHomePageGarbageDisposalImg,R.animator.homepage_scan_anim_rotate_image_finish);
+                mHomePageGarbageDisposalImg.setVisibility(View.GONE);
+                mHomePageGarbageDisposalTxt.setVisibility(View.VISIBLE);
+                mHomePageGarbageDisposalTxt.setText(Formatter.formatFileSize(getContext(), size));
+                Intent intent=new Intent(getContext(), CleanFinishActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -222,6 +238,7 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
                 mHomePageVirusKillingImg.setVisibility(View.GONE);
                 mHomePageVirusKillTxt.setVisibility(View.VISIBLE);
                 mHomePageVirusKillTxt.setText(count + "");
+                mHomePageMobileAcceleratorImg.startAnimation(AnimationUtils.loadAnimation(getContext(), R.anim.homepage_scan_image_alpha));
             }
         });
     }
@@ -266,9 +283,5 @@ public class HomePageFragment extends BaseFragment implements View.OnClickListen
         mPresenter = (HomePagePresenter) Preconditions.checkNotNull(presenter);
     }
 
-    public void startRotateAnimator(View imageView) {
-        Animator animator = AnimatorInflater.loadAnimator(getContext(), R.animator.homepage_scan_anim_rotate_image_finish);
-        animator.setTarget(imageView);
-        animator.start();
-    }
+
 }
