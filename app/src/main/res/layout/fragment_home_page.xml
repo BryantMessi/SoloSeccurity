@@ -32,7 +32,7 @@
                 android:layout_height="match_parent"
                 android:visibility="gone" />
             <!--水波紋-->
-            <com.solo.security.homepage.view.HomePageCircleRippleView
+            <com.solo.security.common.view.CommonCircleRippleView
                 android:id="@+id/homepage_circle_ripple_vew"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
