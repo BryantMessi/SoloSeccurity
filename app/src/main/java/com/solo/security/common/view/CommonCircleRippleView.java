@@ -1,4 +1,4 @@
-package com.solo.security.homepage.view;
+package com.solo.security.common.view;
 
 import android.animation.Animator;
 import android.animation.AnimatorSet;
@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * Created by haipingguo on 16-11-18.
  */
-public class HomePageCircleRippleView extends RelativeLayout {
+public class CommonCircleRippleView extends RelativeLayout {
     private int mRippleColor;
     private int mRippleRadius = 400;
     private int mAnimDuration = 1000;
@@ -34,15 +34,15 @@ public class HomePageCircleRippleView extends RelativeLayout {
     private AnimatorSet mAnimatorSet = new AnimatorSet();
     private List<Animator> mAnimatorList = new ArrayList<>();
 
-    public HomePageCircleRippleView(Context context) {
+    public CommonCircleRippleView(Context context) {
         this(context,null);
     }
 
-    public HomePageCircleRippleView(Context context, AttributeSet attrs) {
+    public CommonCircleRippleView(Context context, AttributeSet attrs) {
         this(context, attrs,0);
     }
 
-    public HomePageCircleRippleView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CommonCircleRippleView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init(context);
     }

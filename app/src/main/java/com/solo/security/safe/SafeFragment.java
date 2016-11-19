@@ -14,9 +14,10 @@ import android.view.ViewGroup;
 
 import com.google.common.base.Preconditions;
 import com.solo.security.R;
+import com.solo.security.common.BaseFragment;
 import com.solo.security.utils.PermissionsChecker;
 
-public class SafeFragment extends Fragment implements SafeContract.DeepSafeView, View.OnClickListener {
+public class SafeFragment extends BaseFragment implements SafeContract.DeepSafeView, View.OnClickListener {
 
 
     private SafePresenter mPresenter;
@@ -39,15 +40,12 @@ public class SafeFragment extends Fragment implements SafeContract.DeepSafeView,
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_safe, container, false);
+    protected int getContentViewID() {
+        return R.layout.fragment_safe;
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+    protected void initViewsAndData(View view) {
         view.findViewById(R.id.btn_safe).setOnClickListener(this);
     }
 
