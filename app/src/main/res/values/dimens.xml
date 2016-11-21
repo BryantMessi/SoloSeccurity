@@ -5,4 +5,6 @@
 
     <!--common-->
     <dimen name="common_round_corner">2dp</dimen>
+    <dimen name="boost_progress_stroke_width">3dp</dimen>
+
 </resources>

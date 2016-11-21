@@ -15,4 +15,7 @@
 
     <!--waveView-->
     <color name="main_theme_accent">#ff486f</color>
+
+    <color name="boost_circle_progress_bg">#ff486f</color>
+
 </resources>
