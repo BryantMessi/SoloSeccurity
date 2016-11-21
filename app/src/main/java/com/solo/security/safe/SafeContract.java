@@ -3,6 +3,9 @@ package com.solo.security.safe;
 
 import com.solo.security.common.BasePresenter;
 import com.solo.security.common.BaseView;
+import com.solo.security.data.Security;
+
+import java.util.List;
 
 /**
  * Created by Messi on 16-11-4.
@@ -21,12 +24,12 @@ public interface SafeContract {
     }
 
     interface DeepSafeView extends BaseSafeView {
-        void updateCurrentScanApp();
+        void updateCurrentScanApp(List<Security> securities);
     }
 
     interface BaseSafePresenter extends BasePresenter {
         void startCloudScan();
 
-        void fixScanResult();
+        void fixScanResult(List<Security> securities);
     }
 }

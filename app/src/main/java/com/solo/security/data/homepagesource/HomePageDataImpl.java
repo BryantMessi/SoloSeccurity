@@ -66,7 +66,7 @@ public enum HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCallb
 
     @Override
     public void fixSafe() {
-        mSafe.fixUnSafeApp(this);
+        mSafe.fixUnSafeApp(null, this);
     }
 
     @Override
@@ -144,23 +144,23 @@ public enum HomePageDataImpl implements HomePageData, MemoryData.FastMemoryCallb
     public void onAdFilesLoaded(List<Security> securities) {
         mGarbageFiles.put("Ad", securities);
         if (mGarbageFiles.size() == 3) {
-            mCallback.onGarbageResult(mGarbageFiles,0);
+            mCallback.onGarbageResult(mGarbageFiles, 0);
         }
     }
 
     @Override
-    public void onCacheFilesLoaded(List<Security> securities,long garbageSize ) {
+    public void onCacheFilesLoaded(List<Security> securities, long garbageSize) {
         mGarbageFiles.put("Cache", securities);
         if (mGarbageFiles.size() == 3) {
-            mCallback.onGarbageResult(mGarbageFiles,garbageSize);
+            mCallback.onGarbageResult(mGarbageFiles, garbageSize);
         }
     }
 
     @Override
-    public void onTempFilesLoaded(List<Security> securities,long garbageSize ) {
+    public void onTempFilesLoaded(List<Security> securities, long garbageSize) {
         mGarbageFiles.put("Temp", securities);
         if (mGarbageFiles.size() == 3) {
-            mCallback.onGarbageResult(mGarbageFiles,garbageSize);
+            mCallback.onGarbageResult(mGarbageFiles, garbageSize);
         }
     }
 

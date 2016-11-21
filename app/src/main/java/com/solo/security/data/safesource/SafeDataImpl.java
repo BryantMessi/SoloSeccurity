@@ -1,7 +1,9 @@
 package com.solo.security.data.safesource;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -27,17 +29,25 @@ public enum SafeDataImpl implements SafeData {
 
     INSTANCE;
 
-    private BaseSafeCallback mCallback;
+    private DeepSafeScanCallback mCallback;
 
     @Override
     public void cloudSafeScan(BaseSafeCallback callback) {
-        mCallback = Preconditions.checkNotNull(callback, "callback is not set into this method");
+        mCallback = (DeepSafeScanCallback) Preconditions.checkNotNull(callback, "callback is not set into this method");
         new GenerateAppInfo().execute();
     }
 
     @Override
-    public void fixUnSafeApp(BaseSafeCallback callback) {
-
+    public void fixUnSafeApp(List<Security> securities, BaseSafeCallback callback) {
+        Context context = Preconditions.checkNotNull(SecurityApplication.getContext());
+        for (Security security : securities) {
+            String pkgName = security.getPackageName();
+            Intent intent = new Intent();
+            intent.setAction(Intent.ACTION_DELETE);
+            intent.setData(Uri.parse("package:" + pkgName));
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            context.startActivity(intent);
+        }
     }
 
     private class GenerateAppInfo extends AsyncTask<Void, Double, Void> {
@@ -76,6 +86,7 @@ public enum SafeDataImpl implements SafeData {
                 List<AppInfo> appInfos = result.getList();
                 if (appInfos != null && !appInfos.isEmpty()) {
                     List<Security> securities = new ArrayList<>();
+                    List<Security> temp = new ArrayList<>();
                     int unSafeCount = 0;
                     for (int i = 0; i < appInfos.size(); i++) {
                         AppInfo ai = appInfos.get(i);
@@ -92,8 +103,13 @@ public enum SafeDataImpl implements SafeData {
                         } else {
                             security.setInfo("safe");
                         }
+                        temp.add(security);
                         securities.add(security);
                         publishProgress((double) (i * 100 / appInfos.size()));
+                        if (i != 0 && i % 5 == 0) {
+                            mCallback.onCurrentScan(temp);
+                            temp.clear();
+                        }
                     }
                     mCallback.onScanningUnSafe(unSafeCount);
                     mCallback.onScanFinished(securities);

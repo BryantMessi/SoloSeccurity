@@ -30,8 +30,8 @@ public class SafePresenter implements SafeContract.BaseSafePresenter, SafeData.D
     }
 
     @Override
-    public void fixScanResult() {
-        mData.fixUnSafeApp(this);
+    public void fixScanResult(List<Security> securities) {
+        mData.fixUnSafeApp(securities, this);
     }
 
     @Override
@@ -40,8 +40,8 @@ public class SafePresenter implements SafeContract.BaseSafePresenter, SafeData.D
     }
 
     @Override
-    public void onCurrentScan() {
-        mView.updateCurrentScanApp();
+    public void onCurrentScan(List<Security> securities) {
+        mView.updateCurrentScanApp(securities);
     }
 
     @Override

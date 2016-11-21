@@ -17,6 +17,7 @@ import com.google.common.base.Preconditions;
 import com.solo.security.R;
 import com.solo.security.common.BaseFragment;
 import com.solo.security.common.view.CommonCircleProgressView;
+import com.solo.security.data.Security;
 import com.solo.security.safe.view.SafeProgressView;
 import com.solo.security.utils.PermissionsChecker;
 
@@ -26,7 +27,7 @@ import java.util.List;
 import butterknife.BindView;
 
 public class SafeFragment extends BaseFragment implements SafeContract.DeepSafeView, View.OnClickListener {
-    private int[] mSafeImageRes = {R.mipmap.icon1, R.mipmap.icon2,R.mipmap.icon3,R.mipmap.icon4,R.mipmap.icon5};
+    private int[] mSafeImageRes = {R.mipmap.icon1, R.mipmap.icon2, R.mipmap.icon3, R.mipmap.icon4, R.mipmap.icon5};
 
     @BindView(R.id.safe_progress_vew)
     SafeProgressView mSafeProgressView;
@@ -69,11 +70,21 @@ public class SafeFragment extends BaseFragment implements SafeContract.DeepSafeV
         super.onResume();
         mPresenter.start();
         mPresenter.startCloudScan();
+//        //FIXME:测试用
+//        List<Security> securities = new ArrayList<>();
+//        Security security1 = new Security();
+//        security1.setPackageName("com.pingstart.adsdk");
+//        securities.add(security1);
+//
+//        Security security2 = new Security();
+//        security2.setPackageName("com.solo.clean");
+//        securities.add(security2);
+//        mPresenter.fixScanResult(securities);
     }
 
     @Override
-    public void updateCurrentScanApp() {
-
+    public void updateCurrentScanApp(List<Security> securities) {
+        Log.d("messi", "size : " + securities.size());
     }
 
     @Override
@@ -83,9 +94,9 @@ public class SafeFragment extends BaseFragment implements SafeContract.DeepSafeV
 
     @Override
     public void updateScanProgress(double progress) {
-        Log.i("ghpppp","progress=="+progress);
-        if(99==(int)progress){
-            progress=100;
+        Log.i("ghpppp", "progress==" + progress);
+        if (99 == (int) progress) {
+            progress = 100;
         }
         mSafeProgressView.setBounceProgress((int) progress);
     }

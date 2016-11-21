@@ -21,10 +21,10 @@ public interface SafeData {
     }
 
     interface DeepSafeScanCallback extends BaseSafeCallback {
-        void onCurrentScan();
+        void onCurrentScan(List<Security> securities);
     }
 
     void cloudSafeScan(BaseSafeCallback callback);
 
-    void fixUnSafeApp(BaseSafeCallback callback);
+    void fixUnSafeApp(List<Security> securities, BaseSafeCallback callback);
 }
