@@ -13,7 +13,7 @@ public interface SafeContract {
     interface BaseSafeView extends BaseView<BaseSafePresenter> {
         void notifyScannedUnSafe(int count);
 
-        void updateScanProgress();
+        void updateScanProgress(double progress);
 
         void scanFinished();
 

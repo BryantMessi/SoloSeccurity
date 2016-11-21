@@ -11,14 +11,27 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.google.common.base.Preconditions;
 import com.solo.security.R;
 import com.solo.security.common.BaseFragment;
+import com.solo.security.common.view.CommonCircleProgressView;
+import com.solo.security.safe.view.SafeProgressView;
 import com.solo.security.utils.PermissionsChecker;
 
-public class SafeFragment extends BaseFragment implements SafeContract.DeepSafeView, View.OnClickListener {
+import java.util.ArrayList;
+import java.util.List;
 
+import butterknife.BindView;
+
+public class SafeFragment extends BaseFragment implements SafeContract.DeepSafeView, View.OnClickListener {
+    private int[] mSafeImageRes = {R.mipmap.icon1, R.mipmap.icon2,R.mipmap.icon3,R.mipmap.icon4,R.mipmap.icon5};
+
+    @BindView(R.id.safe_progress_vew)
+    SafeProgressView mSafeProgressView;
+
+    private List<ImageView> mSafeImgList = new ArrayList<>();
 
     private SafePresenter mPresenter;
 
@@ -46,13 +59,16 @@ public class SafeFragment extends BaseFragment implements SafeContract.DeepSafeV
 
     @Override
     protected void initViewsAndData(View view) {
-        view.findViewById(R.id.btn_safe).setOnClickListener(this);
+        for (int imagRe : mSafeImageRes) {
+
+        }
     }
 
     @Override
     public void onResume() {
         super.onResume();
         mPresenter.start();
+        mPresenter.startCloudScan();
     }
 
     @Override
@@ -66,8 +82,12 @@ public class SafeFragment extends BaseFragment implements SafeContract.DeepSafeV
     }
 
     @Override
-    public void updateScanProgress() {
-
+    public void updateScanProgress(double progress) {
+        Log.i("ghpppp","progress=="+progress);
+        if(99==(int)progress){
+            progress=100;
+        }
+        mSafeProgressView.setBounceProgress((int) progress);
     }
 
     @Override
@@ -89,9 +109,8 @@ public class SafeFragment extends BaseFragment implements SafeContract.DeepSafeV
     public void onClick(View v) {
         int id = v.getId();
         switch (id) {
-            case R.id.btn_safe:
-                mPresenter.startCloudScan();
-                break;
+            //
+
         }
     }
 

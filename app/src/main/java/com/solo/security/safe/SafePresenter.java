@@ -56,7 +56,7 @@ public class SafePresenter implements SafeContract.BaseSafePresenter, SafeData.D
 
     @Override
     public void onScanProgressChanged(double progress) {
-        mView.updateScanProgress();
+        mView.updateScanProgress(progress);
     }
 
     @Override
